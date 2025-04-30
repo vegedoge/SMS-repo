@@ -1,20 +1,34 @@
 package com.example.ss_lab1;
 
-public class DataPoint {
-    private static final long serialVersionUID = 1L; // for serialization
-    private double[] features;
-    private String label;
+import java.io.Serializable;
 
-    public DataPoint(double[] features, String label) {
-        this.features = features;
-        this.label = label;
+/// designed as a base class for wifi / acc data
+public abstract class DataPoint<TLabel> implements Serializable{
+    public enum DataType {
+        ACTIVITY,
+        LOCATION
     }
 
+    protected final DataType dataType;
+    protected final TLabel label;
+    protected final double[] features;
+    protected final long timestamp;
+
+    public DataPoint(DataType dataType, TLabel label, double[] features) {
+        this.dataType = dataType;
+        this.label = label;
+        this.features = features;
+        this.timestamp = System.currentTimeMillis();
+    }
+
+    //
+    public DataType getType() {
+        return dataType;
+    }
+    public TLabel getLabel() {
+        return label;
+    }
     public double[] getFeatures() {
         return features;
-    }
-
-    public String getLabel() {
-        return label;
     }
 }
