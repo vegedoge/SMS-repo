@@ -12,24 +12,21 @@ import java.util.Map;
 import java.util.HashMap;
 
 public class KNNFilter {
-    private List<DataPoint> trainingData = new ArrayList<>();
-    private int k;
-    private Context context;
+    private final List<? extends DataPoint<?>> trainingData;
+    private final int k;
 
     // construct
-    public KNNFilter(Context context, int k) {
-        this.context = context;
+    public KNNFilter(List<? extends DataPoint<?>> trainingData, int k) {
+        this.trainingData = trainingData;
         this.k = k;
-        // load data
-        trainingData = SerialStorage.loadData(context);
     }
 
-    // add training data
-    public void addTrainingData(DataPoint dataPoint) {
-        trainingData.add(dataPoint);
-        // TODO! save data
-        SerialStorage.saveData(context, trainingData);
-    }
+//    // add training data
+//    public void addTrainingData(DataPoint dataPoint) {
+//        trainingData.add(dataPoint);
+//        // TODO! save data
+//        SerialStorage.saveData(context, trainingData);
+//    }
 
     // Euclidean distance
     private double calculateDistance(double[] x, double[] y) {
@@ -41,18 +38,18 @@ public class KNNFilter {
     }
 
     // get result
-    public String predict(DataPoint input) {
+    public String predict(double[] inputFeatures) {
         if (trainingData == null || trainingData.isEmpty()) {
             return "Err: No training data available";
         }
 
         // maintain a p-queue of size k
-        PriorityQueue<Pair<DataPoint, Double>> KNneighbours = new PriorityQueue<> (
+        PriorityQueue<Pair<DataPoint<?>, Double>> KNneighbours = new PriorityQueue<> (
                 Comparator.comparingDouble(pair -> pair.second)
         );
 
-        for (DataPoint dataPoint : trainingData) {
-            double distance = calculateDistance(input.getFeatures(), dataPoint.getFeatures());
+        for (DataPoint<?> dataPoint : trainingData) {
+            double distance = calculateDistance(inputFeatures, dataPoint.getFeatures());
             KNneighbours.add(new Pair<>(dataPoint, distance));
             if (KNneighbours.size() > k) {
                 KNneighbours.poll();
@@ -62,8 +59,8 @@ public class KNNFilter {
         // find the most common label
         Map<String, Integer> resultLabels = new HashMap<>();
         while (!KNneighbours.isEmpty()) {
-            Pair<DataPoint, Double> pair = KNneighbours.poll();
-            String label = pair.first.getLabel();
+            Pair<DataPoint<?>, Double> pair = KNneighbours.poll();
+            String label = (String) pair.first.getLabel();
             // if not exist before, put 1
             resultLabels.put(label, resultLabels.getOrDefault(label, 0) + 1);
         }
