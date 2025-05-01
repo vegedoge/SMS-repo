@@ -12,9 +12,9 @@ public class SerialStorage {
     private static final String WIFI_FILE_NAME = "location_points.ser";
 
     ///  save data based on dataType
-    public static void saveData(Context context, List<? extends DataPoint> data) {
+    public static void saveData(Context context, DataPoint data) {
         // getType to see what is the data type
-        String filename = data.get(0).getType() == DataPoint.DataType.ACTIVITY ? ACC_FILE_NAME : WIFI_FILE_NAME;
+        String filename = data.getType() == DataPoint.DataType.ACTIVITY ? ACC_FILE_NAME : WIFI_FILE_NAME;
 
         try (ObjectOutputStream oos = new ObjectOutputStream(
                 context.openFileOutput(filename, Context.MODE_PRIVATE))) {
