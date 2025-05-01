@@ -49,9 +49,10 @@ public class MainActivity extends AppCompatActivity {
     private Location curLocation = Location.X;      // label for rooms
 
     // --- UI ---
+    private Button trainButton;
     private Button detectButton;
     private TextView resultText;
-    private Button modeSwitchButton;
+//    private Button modeSwitchButton;
     private TextView modeStatusText;
 
     // --- acc  sensor ---
@@ -81,9 +82,10 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // bind all UIs
-        detectButton = findViewById(R.id.detectButton);
+        trainButton = findViewById(R.id.train_btn);
+        detectButton = findViewById(R.id.detect_btn);
         resultText = findViewById(R.id.result_text);
-        modeSwitchButton = findViewById(R.id.mode_switch_btn);
+//        modeSwitchButton = findViewById(R.id.mode_switch_btn);
         modeStatusText = findViewById(R.id.mode_status_txt);
 
         // init wifi and acc sensors, cast object to SensorManager
@@ -97,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
 
         // Button logic
         /// click to switch mode
-        modeSwitchButton.setOnClickListener(v -> {
+        ///  must check the logic here!!
+        trainButton.setOnClickListener(v -> {
             if (curMode == Mode.TRAINING) {
                 curMode = Mode.DETECTION;
             } else {

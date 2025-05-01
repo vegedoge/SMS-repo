@@ -90,7 +90,7 @@
 
     <!-- Detect button  -->
     <Button
-        android:id="@+id/detectButton"
+        android:id="@+id/detect_btn"
         android:layout_width="110dp"
         android:layout_height="80dp"
         android:text="Detect"
@@ -102,7 +102,7 @@
 
     <!-- mode switch button -->
     <Button
-        android:id="@+id/mode_switch_btn"
+        android:id="@+id/train_btn"
         android:layout_width="110dp"
         android:layout_height="80dp"
         android:text="Train"
