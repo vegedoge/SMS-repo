@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.Manifest;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -40,6 +41,7 @@ public class MainActivity extends AppCompatActivity {
     private static final List<String> AP_LIST = Arrays.asList(      // pre defined wifi access point list
             "aa:bb:cc:dd:ee:ff"
     );
+    private static final int REQUEST_LOCATION_PERMISSION = 1;
 
 
     // --- modes ---
@@ -65,6 +67,7 @@ public class MainActivity extends AppCompatActivity {
     private WifiManager wifiManager;
     private BroadcastReceiver wifiScanReceiver;
     private boolean isScanning = false;
+    private String curLocationLabel;
 
 
 
@@ -111,7 +114,10 @@ public class MainActivity extends AppCompatActivity {
 
         ///  click to strat detect
         detectButton.setOnClickListener(v -> {
-
+            checkLocationPermission();
+            wifiManager.startScan();
+            List<ScanResult> scanResults = wifiManager.getScanResults();
+            processWifiScanResults(scanResults);
 
         });
     }
@@ -216,20 +222,12 @@ public class MainActivity extends AppCompatActivity {
         } else {
             List<LocationDataPoint> trainingData = SerialStorage.loadData(this, LocationDataPoint.class);
             String predictedLabel = new KNNFilter(trainingData, K_VALUE_LOCATION).predict(features);
-            // TODO: add UI functions for update
-            updateLocationUI(predictedLabel);
+
+            // update curLocation
+            curLocation = Location.valueOf(predictedLabel);
+            updateLocationUI();
         }
 
      }
 
-     // TODO: only has location now
-     private void callDetection(double[] features) {
-         List<DataPoint> trainingData = SerialStorage.loadData(this);
-         if (trainingData == null || trainingData.isEmpty()) {
-             resultText.setText("No training data available");
-             return;
-         }
-
-         String predictedLabel = new KNNFilter(trainingData, K_VALUE_LOCATION)
-     }
 }
