@@ -44,7 +44,9 @@ public class MainActivity extends AppCompatActivity {
 
     // --- modes ---
     private enum Mode {TRAINING, DETECTION}
-    private Mode appMode = Mode.DETECTION;              // default
+    private enum Location {C1, C2, C3, C4, X}
+    private Mode curMode = Mode.DETECTION;              // default
+    private Location curLocation = Location.X;      // label for rooms
 
     // --- UI ---
     private Button detectButton;
@@ -62,7 +64,6 @@ public class MainActivity extends AppCompatActivity {
     private WifiManager wifiManager;
     private BroadcastReceiver wifiScanReceiver;
     private boolean isScanning = false;
-    private String curLocationLabel;    // label for rooms
 
 
 
@@ -92,9 +93,60 @@ public class MainActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, "failed to get sensor data", Toast.LENGTH_LONG).show();
         }
+
+
+        // Button logic
+        /// click to switch mode
+        modeSwitchButton.setOnClickListener(v -> {
+            if (curMode == Mode.TRAINING) {
+                curMode = Mode.DETECTION;
+            } else {
+                curMode = Mode.TRAINING;
+            }
+            updateModeUI();
+        });
+
+        ///  click to strat detect
+        detectButton.setOnClickListener(v -> {
+
+
+        });
     }
 
-    // permission check for sensors
+    /// current mode ui update function
+    private void updateModeUI() {
+        if (curMode == Mode.TRAINING) {
+            modeStatusText.setText(R.string.mode_training);
+        } else {
+            modeStatusText.setText(R.string.mode_detection);
+        }
+    }
+
+    ///  current location ui update function
+    private void updateLocationUI() {
+        switch (curLocation) {
+            case C1:
+                resultText.setText(R.string.room_C1);
+                break;
+            case C2:
+                resultText.setText(R.string.room_C2);
+                break;
+            case C3:
+                resultText.setText(R.string.room_C3);
+                break;
+            case C4:
+                resultText.setText(R.string.room_C4);
+                break;
+            case X:
+                resultText.setText(R.string.room_unknown);
+                break;
+            default:
+                resultText.setText(R.string.room_unknown);
+        }
+        
+    }
+
+    /// permission check for sensors
     private boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
@@ -154,7 +206,7 @@ public class MainActivity extends AppCompatActivity {
         // lower than a threshold to -100dbm, not decided yet
         double[] features = LocationDataPoint.genWifiFeatures(scanResults, AP_LIST);
 
-        if(appMode == Mode.TRAINING) {
+        if(curMode == Mode.TRAINING) {
             if (curLocationLabel == null) return;
             LocationDataPoint locationDP = new LocationDataPoint(curLocationLabel, features);
             SerialStorage.saveData(this, locationDP);

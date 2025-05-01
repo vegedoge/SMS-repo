@@ -1,3 +1,11 @@
 <resources>
     <string name="app_name">SS_lab1</string>
+    <string name="mode_training">Training</string>
+    <string name="mode_detection">Detection</string>
+
+    <string name="room_C1">C1</string>
+    <string name="room_C2">C2</string>
+    <string name="room_C3">C3</string>
+    <string name="room_C4">C4</string>
+    <string name="room_unknown">Unknown</string>
 </resources>

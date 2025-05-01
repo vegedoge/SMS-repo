@@ -64,25 +64,51 @@
     <TextView
         android:id="@+id/result_text"
         android:layout_width="200dp"
-        android:layout_height="100dp"
+        android:layout_height="80dp"
         android:background="@drawable/border"
-        android:text="Test state"
+        android:text="Result state"
         android:textSize="24sp"
         android:gravity="center"
         android:layout_marginLeft="106dp"
-        android:layout_marginBottom="290dp"
+        android:layout_marginBottom="310dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!--    result output-->
+    <TextView
+        android:id="@+id/mode_status_txt"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:background="@drawable/border"
+        android:text="Mode state"
+        android:textSize="24sp"
+        android:gravity="center"
+        android:layout_marginLeft="106dp"
+        android:layout_marginBottom="210dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <!-- Detect button  -->
     <Button
         android:id="@+id/detectButton"
-        android:layout_width="130dp"
+        android:layout_width="110dp"
         android:layout_height="80dp"
         android:text="Detect"
         android:textSize="24sp"
-        android:layout_marginLeft="145dp"
-        android:layout_marginBottom="190dp"
+        android:layout_marginLeft="80dp"
+        android:layout_marginBottom="100dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <!-- mode switch button -->
+    <Button
+        android:id="@+id/mode_switch_btn"
+        android:layout_width="110dp"
+        android:layout_height="80dp"
+        android:text="Train"
+        android:textSize="24sp"
+        android:layout_marginLeft="220dp"
+        android:layout_marginBottom = "100dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
