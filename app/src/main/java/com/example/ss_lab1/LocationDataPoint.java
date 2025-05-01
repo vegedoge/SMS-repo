@@ -30,7 +30,7 @@ public class LocationDataPoint extends DataPoint<String>{
      * @param apList        - predefined available wifi list
      * @return double[]     - array of wifi features
      */
-    private static double[] genWifiFeatures (
+    public static double[] genWifiFeatures (
             List<ScanResult> scannedAps,
             List<String> apList
     ) {
