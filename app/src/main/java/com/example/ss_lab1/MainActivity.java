@@ -22,13 +22,14 @@ import androidx.fragment.app.Fragment;
 import java.util.Arrays;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements TrainFragment.ControlListener {
     // --- const values ---
     private static final double WIFI_DEFAULT_LOW_RSSI = -100.0;     // -100dbm is low enough
     private static final int K_VALUE_LOCATION = 3;                  // K value for location (wifi)
     private static final int K_VALUE_ACTIVITY = 3;                  // K value for activity (acc)
     private static final List<String> AP_LIST = Arrays.asList(      // pre defined wifi access point list
-            "aa:bb:cc:dd:ee:ff"
+            "00:13:10:85:fe:01",
+            "11:22:33:44:55:66"
     );
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
@@ -39,12 +40,6 @@ public class MainActivity extends AppCompatActivity {
     private Mode curMode = Mode.DETECTION;              // default
     private Location curLocation = Location.X;      // label for rooms
 
-    // --- UI ---
-    private Button trainButton;
-    private Button detectButton;
-    private TextView resultText;
-//    private Button modeSwitchButton;
-    private TextView modeStatusText;
 
     // --- acc  sensor ---
     private SensorManager sensorManager;
@@ -67,6 +62,20 @@ public class MainActivity extends AppCompatActivity {
     private KNNFilter activityFilter;
     private KNNFilter locationFilter;
 
+    // --- interface ---
+    @Override
+    public void launchWifiScan() {
+        startWifiScan();
+    }
+    @Override
+    public void onLocationSelected(String label) {
+        curLocationLabel = label;
+    }
+    @Override
+    public void onActivitySelected(String label) {
+        curActivityLabel = label;
+    }
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -74,91 +83,60 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         // get fragment
-        curMode = showFragment(new DetectFragment());
-
-        // bind all UIs
-//        detectButton = findViewById(R.id.detect_btn);
-//        resultText = findViewById(R.id.result_text);
-//        modeStatusText = findViewById(R.id.mode_status_txt);
+        showFragment(new DetectFragment());
 
         // init wifi and acc sensors, cast object to SensorManager
-        sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-        if (sensorManager != null) {
-            accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-        } else {
-            Toast.makeText(this, "failed to get sensor data", Toast.LENGTH_LONG).show();
-        }
+        initSensors();
 
-
-        // Button logic
-        /// click to switch mode
-        ///  must check the logic here!!
-//        trainButton.setOnClickListener(v -> {
-//            if (curMode == Mode.TRAINING) {
-//                curMode = Mode.DETECTION;
-//            } else {
-//                curMode = Mode.TRAINING;
-//            }
-//            updateModeUI();
-//        });
-
-        ///  click to strat detect
-//        detectButton.setOnClickListener(v -> {
-//            checkLocationPermission();
-//            wifiManager.startScan();
-//            List<ScanResult> scanResults = wifiManager.getScanResults();
-//            processWifiScanResults(scanResults);
-//
-//        });
     }
 
     ///  UI page
-    public Mode showFragment(Fragment fragment) {
+    public void showFragment(Fragment fragment) {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.fragment_container, fragment)
                 .commit();
         if (fragment instanceof TrainFragment) {
-            return Mode.TRAINING;
+            curMode =  Mode.TRAINING;
         } else {
-            return Mode.DETECTION;
+            curMode =  Mode.DETECTION;
         }
     }
 
     /// current mode ui update function
-    private void updateModeUI() {
-        if (curMode == Mode.TRAINING) {
-            modeStatusText.setText(R.string.mode_training);
-        } else {
-            modeStatusText.setText(R.string.mode_detection);
-        }
-    }
+//    private void updateModeUI() {
+//        if (curMode == Mode.TRAINING) {
+//            modeStatusText.setText(R.string.mode_training);
+//        } else {
+//            modeStatusText.setText(R.string.mode_detection);
+//        }
+//    }
 
     ///  current location ui update function
-    private void updateLocationUI() {
-        switch (curLocation) {
-            case C1:
-                resultText.setText(R.string.room_C1);
-                break;
-            case C2:
-                resultText.setText(R.string.room_C2);
-                break;
-            case C3:
-                resultText.setText(R.string.room_C3);
-                break;
-            case C4:
-                resultText.setText(R.string.room_C4);
-                break;
-            case X:
-                resultText.setText(R.string.room_unknown);
-                break;
-            default:
-                resultText.setText(R.string.room_unknown);
-        }
-        
-    }
+//    private void updateLocationUI() {
+//        switch (curLocation) {
+//            case C1:
+//                resultText.setText(R.string.room_C1);
+//                break;
+//            case C2:
+//                resultText.setText(R.string.room_C2);
+//                break;
+//            case C3:
+//                resultText.setText(R.string.room_C3);
+//                break;
+//            case C4:
+//                resultText.setText(R.string.room_C4);
+//                break;
+//            case X:
+//                resultText.setText(R.string.room_unknown);
+//                break;
+//            default:
+//                resultText.setText(R.string.room_unknown);
+//        }
+//
+//    }
 
     /// permission check for sensors
-    private boolean checkLocationPermission() {
+    public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
             != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this,
@@ -169,46 +147,24 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    private void startWifiScan() {
+        checkLocationPermission();
+        wifiManager.startScan();
+        List<ScanResult> scanResults = wifiManager.getScanResults();
+        processWifiScanResults(scanResults);
+    }
+
      private void initSensors() {
         // acc
          sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-         if (sensorManager != null) {
-             accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
-             if (accelerometer == null) {
-                 Toast.makeText(this, "failed to get acc data", Toast.LENGTH_LONG).show();
-             } else {
-                 // delay registered as 50Hz
-                 sensorManager.registerListener(accelerometerListener, accelerometer, SensorManager.SENSOR_DELAY_GAME);
-             }
-         } else {
-             Toast.makeText(this, "failed to get sensor data", Toast.LENGTH_LONG).show();
-         }
+         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
 
          // wifi
-        //  wifiManager = (WifiManager) getSystemService(WIFI_SERVICE);
          wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
          if (wifiManager == null) {
              Toast.makeText(this, "failed to get wifi data", Toast.LENGTH_LONG).show();
              return;
          }
-
-         // below are ways of continuously scanning wifi, but now I prefer a onClick scan
-
-//         wifiScanReceiver = new BroadcastReceiver() {
-//             @Override
-//             public void onReceive(Context context, Intent intent) {
-//                 if(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION.equals(intent.getAction())) {
-//                     List<ScanResult> scanResults = wifiManager.getScanResults();
-//                     processWifiScanResults(scanResults);
-//                 }
-//             }
-//         };
-//         // listen to the results from os
-//         registerReceiver(wifiScanReceiver, new IntentFilter(WifiManager.SCAN_RESULTS_AVAILABLE_ACTION));
-//
-//         if (checkLocationPermission(){
-//             wifiManager.startScan();
-//         }
      }
 
      /// function to handle received wifi results
@@ -220,14 +176,13 @@ public class MainActivity extends AppCompatActivity {
         if(curMode == Mode.TRAINING) {
             if (curLocationLabel == null) return;
             LocationDataPoint locationDP = new LocationDataPoint(curLocationLabel, features);
-            SerialStorage.saveData(this, locationDP);
+            CsvStorage.saveData(this, locationDP);
         } else {
-            List<LocationDataPoint> trainingData = SerialStorage.loadData(this, LocationDataPoint.class);
+            List<LocationDataPoint> trainingData = CsvStorage.loadData(this, LocationDataPoint.class);
             String predictedLabel = new KNNFilter(trainingData, K_VALUE_LOCATION).predict(features);
 
             // update curLocation
             curLocation = Location.valueOf(predictedLabel);
-            updateLocationUI();
         }
 
      }

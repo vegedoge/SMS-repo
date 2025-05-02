@@ -20,14 +20,29 @@ public class TrainFragment extends Fragment {
     private String curLocation = "";
     private String curActivity = "";
 
+    public interface ControlListener {
+        void launchWifiScan();
+        void onLocationSelected(String label);
+        void onActivitySelected(String label);
+    }
+
+    private ControlListener controlListener;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         return inflater.inflate(R.layout.fragment_train, container, false);
+    }
 
+    @Override
+    public void onAttach(@NonNull android.content.Context context) {
+        super.onAttach(context);
+        controlListener = (ControlListener) context;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        // get Main activity
+//        MainActivity mainActivity = (MainActivity) requireActivity();
 
         // button init and bind
         btnC1 = view.findViewById(R.id.C1_btn);
@@ -42,6 +57,8 @@ public class TrainFragment extends Fragment {
             button.setOnClickListener(v -> {
                 resetAllButtons();
                 button.setSelected(true);
+                curLocation = button.getText().toString();
+                controlListener.onLocationSelected(curLocation);
             });
         }
 
@@ -51,16 +68,22 @@ public class TrainFragment extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 curActivity = parent.getItemAtPosition(position).toString();
+                controlListener.onActivitySelected(curActivity);
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                // nothing happens
             }
         });
 
         view.findViewById(R.id.switch_btn).setOnClickListener(v -> {
             ((MainActivity)requireActivity()).showFragment(new DetectFragment());
+        });
+
+        // bind wifi scan button
+        view.findViewById(R.id.train_wifi_btn).setOnClickListener(v -> {
+            controlListener.launchWifiScan();
         });
     }
 
@@ -69,4 +92,5 @@ public class TrainFragment extends Fragment {
             button.setSelected(false);
         }
     }
+
 }
