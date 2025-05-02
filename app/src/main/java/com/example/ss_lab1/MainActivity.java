@@ -2,36 +2,25 @@ package com.example.ss_lab1;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.hardware.Sensor;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.location.Location;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.fragment.app.Fragment;
 
-import java.io.Serial;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     // --- const values ---
@@ -45,7 +34,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     // --- modes ---
-    private enum Mode {TRAINING, DETECTION}
+    public enum Mode {TRAINING, DETECTION}
     private enum Location {C1, C2, C3, C4, X}
     private Mode curMode = Mode.DETECTION;              // default
     private Location curLocation = Location.X;      // label for rooms
@@ -84,12 +73,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        // get fragment
+        curMode = showFragment(new DetectFragment());
+
         // bind all UIs
-        trainButton = findViewById(R.id.train_btn);
-        detectButton = findViewById(R.id.detect_btn);
-        resultText = findViewById(R.id.result_text);
-//        modeSwitchButton = findViewById(R.id.mode_switch_btn);
-        modeStatusText = findViewById(R.id.mode_status_txt);
+//        detectButton = findViewById(R.id.detect_btn);
+//        resultText = findViewById(R.id.result_text);
+//        modeStatusText = findViewById(R.id.mode_status_txt);
 
         // init wifi and acc sensors, cast object to SensorManager
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
@@ -103,23 +93,35 @@ public class MainActivity extends AppCompatActivity {
         // Button logic
         /// click to switch mode
         ///  must check the logic here!!
-        trainButton.setOnClickListener(v -> {
-            if (curMode == Mode.TRAINING) {
-                curMode = Mode.DETECTION;
-            } else {
-                curMode = Mode.TRAINING;
-            }
-            updateModeUI();
-        });
+//        trainButton.setOnClickListener(v -> {
+//            if (curMode == Mode.TRAINING) {
+//                curMode = Mode.DETECTION;
+//            } else {
+//                curMode = Mode.TRAINING;
+//            }
+//            updateModeUI();
+//        });
 
         ///  click to strat detect
-        detectButton.setOnClickListener(v -> {
-            checkLocationPermission();
-            wifiManager.startScan();
-            List<ScanResult> scanResults = wifiManager.getScanResults();
-            processWifiScanResults(scanResults);
+//        detectButton.setOnClickListener(v -> {
+//            checkLocationPermission();
+//            wifiManager.startScan();
+//            List<ScanResult> scanResults = wifiManager.getScanResults();
+//            processWifiScanResults(scanResults);
+//
+//        });
+    }
 
-        });
+    ///  UI page
+    public Mode showFragment(Fragment fragment) {
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.fragment_container, fragment)
+                .commit();
+        if (fragment instanceof TrainFragment) {
+            return Mode.TRAINING;
+        } else {
+            return Mode.DETECTION;
+        }
     }
 
     /// current mode ui update function
