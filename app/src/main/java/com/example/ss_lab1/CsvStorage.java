@@ -11,18 +11,17 @@ public class CsvStorage {
     private static final String WIFI_FILE_NAME = "location.csv";
     private static final String CSV_HEADER = "label,features";
 
-    // 保存数据（追加模式）
     public static void saveData(Context context, DataPoint data) {
         String filename = data.getType() == DataPoint.DataType.ACTIVITY ? ACC_FILE_NAME : WIFI_FILE_NAME;
         File file = new File(context.getFilesDir(), filename);
 
-        try (FileWriter writer = new FileWriter(file, true)) { // true表示追加模式
-            // 如果是新文件，先写入表头
+        try (FileWriter writer = new FileWriter(file, true)) { // append
+            // check if new
             if (file.length() == 0) {
                 writer.append(CSV_HEADER).append("\n");
             }
 
-            // 转换特征值为字符串
+            // toString
             String featuresStr = Arrays.toString(data.getFeatures())
                     .replace("[", "")
                     .replace("]", "")
@@ -36,7 +35,6 @@ public class CsvStorage {
         }
     }
 
-    // 加载数据
     public static <T extends DataPoint> List<T> loadData(Context context, Class<T> dataType) {
         String filename = (dataType == ActivityDataPoint.class) ? ACC_FILE_NAME : WIFI_FILE_NAME;
         List<T> dataPoints = new ArrayList<>();
@@ -48,7 +46,7 @@ public class CsvStorage {
             boolean isFirstLine = true;
 
             while ((line = reader.readLine()) != null) {
-                // 跳过表头
+                // skip headline
                 if (isFirstLine) {
                     isFirstLine = false;
                     continue;
@@ -72,7 +70,7 @@ public class CsvStorage {
                 }
             }
         } catch (IOException | NumberFormatException e) {
-            // 文件不存在或格式错误时返回空列表
+            // return empty list if error
         }
         return dataPoints;
     }

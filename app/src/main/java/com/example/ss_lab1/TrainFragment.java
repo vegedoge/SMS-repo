@@ -13,7 +13,7 @@ import androidx.fragment.app.Fragment;
 
 public class TrainFragment extends Fragment {
     // uis
-    private Button btnC1, btnC2, btnC3, btnC4;
+    private Button btnC1, btnC3, btnC6, btnC8;
     private Button[] buttons;
 
     // states
@@ -46,11 +46,11 @@ public class TrainFragment extends Fragment {
 
         // button init and bind
         btnC1 = view.findViewById(R.id.C1_btn);
-        btnC2 = view.findViewById(R.id.C2_btn);
+        btnC6 = view.findViewById(R.id.C6_btn);
         btnC3 = view.findViewById(R.id.C3_btn);
-        btnC4 = view.findViewById(R.id.C4_btn);
+        btnC8 = view.findViewById(R.id.C8_btn);
 
-        buttons = new Button[]{btnC1, btnC2, btnC3, btnC4};
+        buttons = new Button[]{btnC1, btnC3, btnC6, btnC8};
 
         // used for button selection
         for (Button button : buttons) {

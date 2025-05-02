@@ -19,14 +19,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- C2 -->
+    <!-- C6 -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/C2_btn"
+        android:id="@+id/C6_btn"
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:background="@drawable/button_bg_selector"
         android:textColor="@drawable/button_txt_selector"
-        android:text="C2"
+        android:text="C6"
         android:textSize="36sp"
         android:textAlignment="center"
         android:layout_marginRight="106dp"
@@ -49,14 +49,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
-    <!-- C4 -->
+    <!-- C8 -->
     <androidx.appcompat.widget.AppCompatButton
-        android:id="@+id/C4_btn"
+        android:id="@+id/C8_btn"
         android:layout_width="100dp"
         android:layout_height="150dp"
         android:background="@drawable/button_bg_selector"
         android:textColor="@drawable/button_txt_selector"
-        android:text="C4"
+        android:text="C8"
         android:textSize="36sp"
         android:textAlignment="center"
         android:layout_marginRight="106dp"
