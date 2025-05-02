@@ -25,8 +25,8 @@ public abstract class DataPoint<TLabel> implements Serializable{
     public DataType getType() {
         return dataType;
     }
-    public TLabel getLabel() {
-        return label;
+    public CharSequence getLabel() {
+        return (CharSequence) label;
     }
     public double[] getFeatures() {
         return features;
