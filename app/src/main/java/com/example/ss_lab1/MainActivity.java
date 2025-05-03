@@ -5,14 +5,9 @@ import static com.example.ss_lab1.CsvStorage.saveWifiScanResults;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.hardware.Sensor;
-import android.hardware.SensorEventListener;
-import android.hardware.SensorManager;
 import android.net.wifi.ScanResult;
 import android.net.wifi.WifiManager;
 import android.os.Bundle;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 import android.Manifest;
 
@@ -44,10 +39,8 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
 
 
     // --- acc  sensor ---
-    private SensorManager sensorManager;
-    private Sensor accelerometer;
-    private SensorEventListener accelerometerListener;
     private String curActivityLabel;    // label for activities
+    private SensorHandler sensorHandler; // a handler which deals with moving sensor
 
     // --- wifi ---
     private WifiManager wifiManager;
@@ -70,12 +63,28 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
         startWifiScan();
     }
     @Override
+    public void launchAccScan() {
+        startAccScan();
+    }
+    @Override
     public void onLocationSelected(String label) {
         curLocationLabel = label;
     }
     @Override
     public void onActivitySelected(String label) {
         curActivityLabel = label;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        sensorHandler.register(); // start listening to the sensor event
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        sensorHandler.unregister(); // stop listening to the sensor event
     }
 
 
@@ -104,39 +113,6 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
         }
     }
 
-    /// current mode ui update function
-//    private void updateModeUI() {
-//        if (curMode == Mode.TRAINING) {
-//            modeStatusText.setText(R.string.mode_training);
-//        } else {
-//            modeStatusText.setText(R.string.mode_detection);
-//        }
-//    }
-
-    ///  current location ui update function
-//    private void updateLocationUI() {
-//        switch (curLocation) {
-//            case C1:
-//                resultText.setText(R.string.room_C1);
-//                break;
-//            case C2:
-//                resultText.setText(R.string.room_C2);
-//                break;
-//            case C3:
-//                resultText.setText(R.string.room_C3);
-//                break;
-//            case C4:
-//                resultText.setText(R.string.room_C4);
-//                break;
-//            case X:
-//                resultText.setText(R.string.room_unknown);
-//                break;
-//            default:
-//                resultText.setText(R.string.room_unknown);
-//        }
-//
-//    }
-
     /// permission check for sensors
     public boolean checkLocationPermission() {
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION)
@@ -156,10 +132,17 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
         processWifiScanResults(scanResults);
     }
 
+    private void startAccScan() {
+        if (curMode == Mode.TRAINING) {
+            sensorHandler.startTraining(curActivityLabel);
+        } else {
+            sensorHandler.startDetecting();
+        }
+    }
+
      private void initSensors() {
         // acc
-         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
-         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+         sensorHandler = new SensorHandler(this);
 
          // wifi
          wifiManager = (WifiManager) getApplicationContext().getSystemService(Context.WIFI_SERVICE);
@@ -187,7 +170,6 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
             // update curLocation
             curLocation = Location.valueOf(predictedLabel);
         }
-
      }
 
 }

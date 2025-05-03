@@ -62,6 +62,28 @@ public class CsvStorage {
         }
     }
 
+    ///  save acc sensor data into csv
+    /// format is [label, meanX, meanY, meanZ, rangeX, rangeY, rangeZ, meanMag]
+    public static void saveAccResults(Context context, String label, float[] features) {
+        final String ACC_FILE_NAME = "acc_scan_results.csv";
+        final String CSV_HEADER = "label,meanX,meanY,meanZ,rangeX,rangeY,rangeZ,meanMag";
+        File file = new File(context.getFilesDir(), ACC_FILE_NAME);
+
+        try (FileWriter writer = new FileWriter(file, true)) {
+            if (file.length() == 0) {
+                writer.append(CSV_HEADER).append("\n");
+            }
+            // write the data with the format
+            writer.append(label).append(",");
+            for (float feature : features) {
+                writer.append(String.valueOf(feature)).append(",");
+            }
+            writer.append("\n");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public static <T extends DataPoint> List<T> loadData(Context context, Class<T> dataType) {
         String filename = (dataType == ActivityDataPoint.class) ? ACC_FILE_NAME : WIFI_FILE_NAME;
         List<T> dataPoints = new ArrayList<>();

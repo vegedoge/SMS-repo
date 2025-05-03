@@ -21,8 +21,13 @@ public class TrainFragment extends Fragment {
     private String curActivity = "";
 
     public interface ControlListener {
+        // start wifi scan
         void launchWifiScan();
+        // start accel scan
+        void launchAccScan();
+        // select location in room
         void onLocationSelected(String label);
+        // select activity in room
         void onActivitySelected(String label);
     }
 
@@ -84,6 +89,11 @@ public class TrainFragment extends Fragment {
         // bind wifi scan button
         view.findViewById(R.id.train_wifi_btn).setOnClickListener(v -> {
             controlListener.launchWifiScan();
+        });
+
+        // bind accel scan button
+        view.findViewById(R.id.train_acc_btn).setOnClickListener(v -> {
+            controlListener.launchAccScan();
         });
     }
 
