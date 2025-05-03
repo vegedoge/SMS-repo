@@ -1,5 +1,7 @@
 package com.example.ss_lab1;
 
+import static com.example.ss_lab1.CsvStorage.saveWifiScanResults;
+
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.pm.PackageManager;
@@ -28,8 +30,8 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
     private static final int K_VALUE_LOCATION = 3;                  // K value for location (wifi)
     private static final int K_VALUE_ACTIVITY = 3;                  // K value for activity (acc)
     private static final List<String> AP_LIST = Arrays.asList(      // pre defined wifi access point list
-            "00:13:10:85:fe:01",
-            "11:22:33:44:55:66"
+            "d0",
+            ""
     );
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
@@ -175,8 +177,9 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
 
         if(curMode == Mode.TRAINING) {
             if (curLocationLabel == null) return;
-            LocationDataPoint locationDP = new LocationDataPoint(curLocationLabel, features);
-            CsvStorage.saveData(this, locationDP);
+//            LocationDataPoint locationDP = new LocationDataPoint(curLocationLabel, features);
+//            CsvStorage.saveData(this, locationDP);
+            saveWifiScanResults(getApplicationContext(), curLocationLabel, scanResults);
         } else {
             List<LocationDataPoint> trainingData = CsvStorage.loadData(this, LocationDataPoint.class);
             String predictedLabel = new KNNFilter(trainingData, K_VALUE_LOCATION).predict(features);

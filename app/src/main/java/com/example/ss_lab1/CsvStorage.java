@@ -1,6 +1,8 @@
 package com.example.ss_lab1;
 
 import android.content.Context;
+import android.net.wifi.ScanResult;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,6 +31,31 @@ public class CsvStorage {
 
             writer.append(data.getLabel()).append(",");
             writer.append(featuresStr).append("\n");
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    ///  saves as one sample one line csv
+    public static void saveWifiScanResults(Context context, String label, List<ScanResult> scanResults) {
+        final String WIFI_FILE_NAME = "wifi_scan_results.csv";
+        final String CSV_HEADER = "label,mac_address,rssi";
+
+        File file = new File(context.getFilesDir(), WIFI_FILE_NAME);
+
+        try (FileWriter writer = new FileWriter(file, true)) {
+            if (file.length() == 0) {
+                writer.append(CSV_HEADER).append("\n");
+            }
+
+            // iteration
+            for (ScanResult result : scanResults) {
+                writer.append(label).append(",");
+                writer.append(result.BSSID).append(",");      // MAC
+                writer.append(String.valueOf(result.level)).append(",");  // (dBm)
+                writer.append("\n");
+            }
 
         } catch (IOException e) {
             e.printStackTrace();

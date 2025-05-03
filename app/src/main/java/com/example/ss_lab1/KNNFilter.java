@@ -21,13 +21,6 @@ public class KNNFilter {
         this.k = k;
     }
 
-//    // add training data
-//    public void addTrainingData(DataPoint dataPoint) {
-//        trainingData.add(dataPoint);
-//        // TODO! save data
-//        SerialStorage.saveData(context, trainingData);
-//    }
-
     // Euclidean distance
     private double calculateDistance(double[] x, double[] y) {
         double sum = 0.0;
