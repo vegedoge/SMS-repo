@@ -23,6 +23,7 @@ public class SensorHandler implements SensorEventListener {
     private boolean isTraining = false;
     private String trainingLabel = "";
     private boolean isDetecting = false;
+    private KNNClassifier sensorKNN;
 //    private String tra
 
     public SensorHandler(Context ctx) {
@@ -30,6 +31,11 @@ public class SensorHandler implements SensorEventListener {
         sensorManager = (SensorManager) ctx.getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         // maybe initialize the KNN here
+        try {
+            sensorKNN = new KNNClassifier(ctx, "acc_train_model.json", 3);
+        } catch (Exception e) {
+            System.out.println("Init KNN error in sensorHandler, " + e);
+        }
     }
 
     ///  start the accel
@@ -50,7 +56,7 @@ public class SensorHandler implements SensorEventListener {
     
     public void startDetecting() {
         this.isDetecting = true;
-        Toast.makeText(this.context, "Start Detecting Data: TODO", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this.context, "Start Detecting Data", Toast.LENGTH_SHORT).show();
         // TODO: 2025/5/3 fill with detect logic
     }
 
@@ -95,7 +101,8 @@ public class SensorHandler implements SensorEventListener {
                 this.isTraining = false;
                 Toast.makeText(context, "Saved Training Sample", Toast.LENGTH_SHORT).show();
             } else if (this.isDetecting) {
-                Toast.makeText(this.context, "Detecting Mode, Sensor Changed", Toast.LENGTH_SHORT).show();
+                String result = sensorKNN.predict(features);
+                Toast.makeText(this.context, "Detecting Mode: " + result, Toast.LENGTH_SHORT).show();
                 this.isDetecting = false;
             }
             this.windowData.clear();

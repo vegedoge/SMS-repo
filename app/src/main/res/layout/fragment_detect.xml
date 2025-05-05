@@ -5,112 +5,117 @@
     android:layout_height="match_parent">
 
     <!-- C1 -->
+
+    <!-- C6 -->
     <TextView
         android:id="@+id/C1_text"
         android:layout_width="100dp"
         android:layout_height="150dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginTop="16dp"
         android:background="@drawable/border"
         android:text="C1"
-        android:textSize="36sp"
         android:textAlignment="center"
-        android:layout_marginLeft="106dp"
-        android:layout_marginTop="151dp"
+        android:textSize="36sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- C6 -->
+    <!-- C3 -->
+
+    <!-- C8 -->
     <TextView
         android:id="@+id/C6_text"
         android:layout_width="100dp"
         android:layout_height="150dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginEnd="104dp"
         android:background="@drawable/border"
         android:text="C6"
-        android:textSize="36sp"
         android:textAlignment="center"
-        android:layout_marginRight="106dp"
-        android:layout_marginTop="151dp"
+        android:textSize="36sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- C3 -->
-    <TextView
-        android:id="@+id/C3_text"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:background="@drawable/border"
-        android:text="C3"
-        android:textSize="36sp"
-        android:textAlignment="center"
-        android:layout_marginLeft="106dp"
-        android:layout_marginBottom="464dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- C8 -->
-    <TextView
-        android:id="@+id/C8_text"
-        android:layout_width="100dp"
-        android:layout_height="150dp"
-        android:background="@drawable/border"
-        android:text="C8"
-        android:textSize="36sp"
-        android:textAlignment="center"
-        android:layout_marginRight="106dp"
-        android:layout_marginBottom="464dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+    <!--    result output-->
 
     <!--    result output-->
     <TextView
         android:id="@+id/result_text"
         android:layout_width="200dp"
         android:layout_height="80dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="284dp"
         android:background="@drawable/border"
+        android:gravity="center"
         android:text="Result state"
         android:textSize="24sp"
-        android:gravity="center"
-        android:layout_marginLeft="106dp"
-        android:layout_marginBottom="360dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-    <!--    result output-->
-    <TextView
-        android:id="@+id/mode_status_txt"
-        android:layout_width="200dp"
-        android:layout_height="80dp"
-        android:background="@drawable/border"
-        android:text="Detect Mode"
-        android:textSize="24sp"
-        android:gravity="center"
-        android:layout_marginLeft="106dp"
-        android:layout_marginBottom="260dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- Detect button  -->
-    <Button
-        android:id="@+id/switch_btn"
-        android:layout_width="150dp"
-        android:layout_height="80dp"
-        android:text="Switch"
-        android:textSize="24sp"
-        android:layout_marginLeft="40dp"
-        android:layout_marginBottom="160dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
-
-    <!-- mode switch button -->
     <Button
         android:id="@+id/detect_btn"
         android:layout_width="150dp"
         android:layout_height="80dp"
+        android:layout_marginStart="216dp"
+        android:layout_marginBottom="84dp"
         android:text="Detect"
         android:textSize="24sp"
-        android:layout_marginLeft="220dp"
-        android:layout_marginBottom = "160dp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <Button
+        android:id="@+id/switch_btn"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="36dp"
+        android:layout_marginBottom="84dp"
+        android:text="Switch"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/C8_text"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_marginEnd="104dp"
+        android:layout_marginBottom="400dp"
+        android:background="@drawable/border"
+        android:text="C8"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <TextView
+        android:id="@+id/C3_text"
+        android:layout_width="100dp"
+        android:layout_height="150dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="400dp"
+        android:background="@drawable/border"
+        android:text="C3"
+        android:textAlignment="center"
+        android:textSize="36sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/mode_status_txt"
+        android:layout_width="200dp"
+        android:layout_height="80dp"
+        android:layout_marginStart="104dp"
+        android:layout_marginBottom="184dp"
+        android:background="@drawable/border"
+        android:gravity="center"
+        android:text="Detect Mode"
+        android:textSize="24sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <!-- Detect button  -->
+
+    <!-- mode switch button -->
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
