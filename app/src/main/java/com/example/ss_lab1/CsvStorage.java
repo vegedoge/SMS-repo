@@ -74,9 +74,9 @@ public class CsvStorage {
                 writer.append(CSV_HEADER).append("\n");
             }
             // write the data with the format
-            writer.append(label).append(",");
+            writer.append(label);
             for (float feature : features) {
-                writer.append(String.valueOf(feature)).append(",");
+                writer.append(",").append(String.valueOf(feature));
             }
             writer.append("\n");
         } catch (IOException e) {
