@@ -2,6 +2,7 @@ package com.example.ss_lab1;
 
 import android.content.Context;
 import android.content.res.AssetManager;
+import android.util.Log;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -23,6 +24,7 @@ public class KNNClassifier {
 
     public KNNClassifier(Context context, String assetFilename, int k) throws Exception {
         this.k = k;
+        loadModelFromAssets(context, assetFilename);
     }
 
     /**
@@ -77,7 +79,7 @@ public class KNNClassifier {
         maxVals = new float[maxArr.length()];
         for (int i  = 0; i < minVals.length; ++i) {
             minVals[i] = (float) minArr.getDouble(i);
-            maxVals[i] = (float) minArr.getDouble(i);
+            maxVals[i] = (float) maxArr.getDouble(i);
         }
 
         for (int i = 0; i < trainArr.length(); ++i) {
@@ -114,4 +116,19 @@ public class KNNClassifier {
             this.distance = distance;
         }
     }
+
+    ///  this function is only used in android test
+    public void printTrainSet() {
+        for (int i = 0; i < trainSet.size(); ++i) {
+            DataPoint dp = trainSet.get(i);
+            StringBuilder sb = new StringBuilder();
+            sb.append("[").append(i).append("] Label: ").append(dp.label).append(", Features: ");
+            for (int j = 0; j < dp.features.length; ++j) {
+                sb.append(dp.features[j]);
+                if (j < dp.features.length - 1) sb.append(", ");
+            }
+            Log.d("KNNTrainSet", sb.toString());
+        }
+    }
+
 }

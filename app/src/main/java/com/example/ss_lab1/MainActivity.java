@@ -54,8 +54,8 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
     private final String[] states = {"Moving", "Still", "???"};
 
     // --- KNN objects ---
-    private KNNFilter activityFilter;
-    private KNNFilter locationFilter;
+//    private KNNFilter activityFilter;
+//    private KNNFilter locationFilter;
 
     // --- interface ---
     @Override
@@ -156,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
      private void processWifiScanResults(List<ScanResult> scanResults)  {
         // first we filter all the weak signals, and maybe put signals
         // lower than a threshold to -100dbm, not decided yet
-        double[] features = LocationDataPoint.genWifiFeatures(scanResults, AP_LIST);
+//        double[] features = LocationDataPoint.genWifiFeatures(scanResults, AP_LIST);
 
         if(curMode == Mode.TRAINING) {
             if (curLocationLabel == null) return;
@@ -164,11 +164,11 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
 //            CsvStorage.saveData(this, locationDP);
             saveWifiScanResults(getApplicationContext(), curLocationLabel, scanResults);
         } else {
-            List<LocationDataPoint> trainingData = CsvStorage.loadData(this, LocationDataPoint.class);
-            String predictedLabel = new KNNFilter(trainingData, K_VALUE_LOCATION).predict(features);
+//            List<LocationDataPoint> trainingData = CsvStorage.loadData(this, LocationDataPoint.class);
+//            String predictedLabel = new KNNFilter(trainingData, K_VALUE_LOCATION).predict(features);
 
             // update curLocation
-            curLocation = Location.valueOf(predictedLabel);
+//            curLocation = Location.valueOf(predictedLabel);
         }
      }
 
