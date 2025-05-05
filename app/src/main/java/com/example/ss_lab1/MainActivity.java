@@ -172,4 +172,7 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
         }
      }
 
+     public SensorHandler getSensorHandler() {
+         return this.sensorHandler;
+     }
 }

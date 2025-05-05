@@ -8,4 +8,6 @@
     <string name="room_C3">C3</string>
     <string name="room_C4">C4</string>
     <string name="room_unknown">Unknown</string>
+
+    <string name="detected_result">Detected: %1$s</string>
 </resources>

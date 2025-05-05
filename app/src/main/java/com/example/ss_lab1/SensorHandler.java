@@ -1,10 +1,13 @@
 package com.example.ss_lab1;
 
+import android.app.Activity;
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.util.Log;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
@@ -14,6 +17,7 @@ public class SensorHandler implements SensorEventListener {
     private final Context context;
     private final SensorManager sensorManager;
     private final Sensor accelerometer;
+    private TextView resultTextView;
 
     // window
     private final ArrayList<float[]> windowData = new ArrayList<>();
@@ -24,18 +28,25 @@ public class SensorHandler implements SensorEventListener {
     private String trainingLabel = "";
     private boolean isDetecting = false;
     private KNNClassifier sensorKNN;
+    private DetectionListener detectionListener; // used to display the action text
 //    private String tra
 
     public SensorHandler(Context ctx) {
         this.context = ctx;
         sensorManager = (SensorManager) ctx.getSystemService(Context.SENSOR_SERVICE);
         accelerometer = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+
         // maybe initialize the KNN here
         try {
             sensorKNN = new KNNClassifier(ctx, "acc_train_model.json", 3);
         } catch (Exception e) {
             System.out.println("Init KNN error in sensorHandler, " + e);
         }
+    }
+
+    ///  this function should be called to bind the listener to detectFragment
+    public void setDetectionListener(DetectionListener listener) {
+        this.detectionListener = listener;
     }
 
     ///  start the accel
@@ -57,7 +68,6 @@ public class SensorHandler implements SensorEventListener {
     public void startDetecting() {
         this.isDetecting = true;
         Toast.makeText(this.context, "Start Detecting Data", Toast.LENGTH_SHORT).show();
-        // TODO: 2025/5/3 fill with detect logic
     }
 
     public static float[] extractFeatures(ArrayList<float[]> data) {
@@ -102,6 +112,10 @@ public class SensorHandler implements SensorEventListener {
                 Toast.makeText(context, "Saved Training Sample", Toast.LENGTH_SHORT).show();
             } else if (this.isDetecting) {
                 String result = sensorKNN.predict(features);
+                if (detectionListener != null) {
+                    // notify the detectFragment to update the ui
+                    detectionListener.onDetectionResult(result);
+                }
                 Toast.makeText(this.context, "Detecting Mode: " + result, Toast.LENGTH_SHORT).show();
                 this.isDetecting = false;
             }
@@ -111,5 +125,9 @@ public class SensorHandler implements SensorEventListener {
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int accuracy) {
+    }
+
+    public interface DetectionListener {
+        void onDetectionResult(String label);
     }
 }

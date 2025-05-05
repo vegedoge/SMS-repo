@@ -5,12 +5,14 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-public class DetectFragment extends Fragment {
+public class DetectFragment extends Fragment implements SensorHandler.DetectionListener {
     private TrainFragment.ControlListener controlListener;
+    private TextView moveTextView;
 
     @Override
     public void onAttach(@NonNull Context context) {
@@ -25,6 +27,10 @@ public class DetectFragment extends Fragment {
 
     @Override
     public void onViewCreated(@NonNull View view, Bundle savedInstanceState) {
+        // bind the textView with the ui
+        moveTextView = view.findViewById(R.id.result_text);
+        ((MainActivity) requireActivity()).getSensorHandler().setDetectionListener(this);
+
         view.findViewById(R.id.switch_btn).setOnClickListener(v -> {
             ((MainActivity)requireActivity()).showFragment(new TrainFragment());
         });
@@ -35,6 +41,13 @@ public class DetectFragment extends Fragment {
             // start wifi detect
 //            controlListener.launchWifiScan();
         });
+    }
+
+    ///  this function is used to update the ui MoveText
+    @Override
+    public void onDetectionResult(String label) {
+        String resultText = getString(R.string.detected_result, label);
+        requireActivity().runOnUiThread(() -> moveTextView.setText(resultText));
     }
 
 
