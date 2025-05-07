@@ -267,8 +267,10 @@ public class CsvStorage {
             }
 
 //            writer.append(String.join(",", record)).append("\n");
+            writer.append(label);
             for(float feature: features){
-                writer.append(String.valueOf(feature)).append(",");
+                writer.append(",");
+                writer.append(String.valueOf(feature));
             }
             writer.append("\n");
 

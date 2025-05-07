@@ -3,6 +3,6 @@
     <string-array name="activity_states">
         <item>Walking</item>
         <item>Still</item>
-        <item>Other</item>
+        <item>Squat</item>
     </string-array>
 </resources>
