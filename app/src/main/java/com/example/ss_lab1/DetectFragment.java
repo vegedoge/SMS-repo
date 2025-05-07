@@ -39,7 +39,7 @@ public class DetectFragment extends Fragment implements SensorHandler.DetectionL
             // start moving detect
             controlListener.launchAccScan();
             // start wifi detect
-//            controlListener.launchWifiScan();
+            controlListener.launchWifiScan();
         });
     }
 
