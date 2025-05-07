@@ -38,7 +38,7 @@ public class SensorHandler implements SensorEventListener {
 
         // maybe initialize the KNN here
         try {
-            sensorKNN = new KNNClassifier(ctx, "acc_train_model.json", 3);
+            sensorKNN = new KNNClassifier(ctx, "acc_train_model.json", 5);
         } catch (Exception e) {
             System.out.println("Init KNN error in sensorHandler, " + e);
         }
