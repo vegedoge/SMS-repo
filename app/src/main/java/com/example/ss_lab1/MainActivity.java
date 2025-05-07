@@ -261,6 +261,10 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
     );
     private static final int REQUEST_LOCATION_PERMISSION = 1;
 
+    public void setWifiResultListener(DetectFragment detectFragment) {
+        this.wifiResultListener = detectFragment;
+    }
+
 
     // --- modes ---
     public enum Mode {TRAINING, DETECTION}
@@ -280,16 +284,12 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
     private String curLocationLabel;
     private KNNClassifier wifiKNN;
 
-
-
     // --- data ---
     private final String[] states = {"Moving", "Still", "???"};
 
-    // --- KNN objects ---
-//    private KNNFilter activityFilter;
-//    private KNNFilter locationFilter;
-
     // --- interface ---
+    private wifiResultListener wifiResultListener;
+
     @Override
     public void launchWifiScan() {
         startWifiScan();
@@ -336,8 +336,10 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
         } catch(Exception e) {
             System.out.println("init KNN for wifi failed" + e);
         }
+    }
 
-
+    public interface wifiResultListener {
+        void onWifiResult(String label);
     }
 
     ///  UI page
@@ -394,23 +396,18 @@ public class MainActivity extends AppCompatActivity implements TrainFragment.Con
 
      /// function to handle received wifi results
      private void processWifiScanResults(float[] features)  {
-        // first we filter all the weak signals, and maybe put signals
-        // lower than a threshold to -100dbm, not decided yet
-//        double[] features = LocationDataPoint.genWifiFeatures(scanResults, AP_LIST);
 
         if(curMode == Mode.TRAINING) {
             if (curLocationLabel == null) {
                 Toast.makeText(this, "Please select a location", Toast.LENGTH_SHORT).show();
                 return;
             }
-//            LocationDataPoint locationDP = new LocationDataPoint(curLocationLabel, features);
-//            CsvStorage.saveData(this, locationDP);
-//            saveWifiScanResults(getApplicationContext(), curLocationLabel, scanResults);
             Toast.makeText(this, "Starting wifi scan", Toast.LENGTH_SHORT).show();
             saveWifiScanFeatures(getApplicationContext(), curLocationLabel, features);
         } else {
             String result = wifiKNN.predict(features);
-            Toast.makeText(this, "Location: " + result, Toast.LENGTH_SHORT).show();
+            wifiResultListener.onWifiResult(result);
+
         }
      }
 

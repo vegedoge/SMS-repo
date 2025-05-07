@@ -5,15 +5,12 @@
     android:layout_height="match_parent">
 
     <!-- C1 -->
-
-    <!-- C6 -->
-
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/C1_btn"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginTop="75dp"
         android:background="@drawable/button_bg_selector"
         android:text="C1"
         android:textAlignment="center"
@@ -22,30 +19,13 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- C3 -->
-
-    <!-- C8 -->
-
-    <!--    result output-->
-<!--    <TextView-->
-<!--        android:id="@+id/result_text"-->
-<!--        android:layout_width="200dp"-->
-<!--        android:layout_height="80dp"-->
-<!--        android:background="@drawable/border"-->
-<!--        android:text="Result state"-->
-<!--        android:textSize="24sp"-->
-<!--        android:gravity="center"-->
-<!--        android:layout_marginLeft="106dp"-->
-<!--        android:layout_marginBottom="360dp"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent" />-->
-
+    <!-- C6 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/C6_btn"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="104dp"
+        android:layout_marginTop="75dp"
+        android:layout_marginEnd="80dp"
         android:background="@drawable/button_bg_selector"
         android:text="C6"
         android:textAlignment="center"
@@ -54,12 +34,13 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+    <!-- C3 -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/C3_btn"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:layout_marginStart="104dp"
-        android:layout_marginBottom="404dp"
+        android:layout_marginStart="82dp"
+        android:layout_marginBottom="400dp"
         android:background="@drawable/button_bg_selector"
         android:text="C3"
         android:textAlignment="center"
@@ -67,20 +48,15 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/C1_btn"
-        app:layout_constraintVertical_bias="0.09" />
+        />
 
-    <!--    result output-->
-
-    <!-- switch button  -->
-
+    <!-- C8  -->
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/C8_btn"
         android:layout_width="100dp"
         android:layout_height="150dp"
-        android:layout_marginTop="-1dp"
-        android:layout_marginEnd="104dp"
-        android:layout_marginBottom="412dp"
+        android:layout_marginEnd="80dp"
+        android:layout_marginBottom="400dp"
         android:background="@drawable/button_bg_selector"
         android:text="C8"
         android:textAlignment="center"
@@ -88,13 +64,13 @@
         android:textSize="36sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/C6_btn" />
+        />
 
     <Spinner
         android:id="@+id/activity_spinner"
         android:layout_width="200dp"
         android:layout_height="80dp"
-        android:layout_marginStart="104dp"
+        android:layout_marginStart="80dp"
         android:layout_marginBottom="332dp"
         android:entries="@array/activity_states"
         android:theme="@style/spinner_style"
@@ -105,7 +81,7 @@
         android:id="@+id/mode_status_txt"
         android:layout_width="200dp"
         android:layout_height="80dp"
-        android:layout_marginStart="104dp"
+        android:layout_marginStart="80dp"
         android:layout_marginBottom="252dp"
         android:background="@drawable/border"
         android:gravity="center"
@@ -116,10 +92,10 @@
 
     <Button
         android:id="@+id/switch_btn"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="80dp"
         android:text="Switch"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:layout_marginLeft="40dp"
         android:layout_marginBottom="160dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -128,22 +104,22 @@
     <!-- detect button -->
     <Button
         android:id="@+id/train_wifi_btn"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="80dp"
         android:text="Train Location"
-        android:textSize="24sp"
-        android:layout_marginLeft="220dp"
+        android:textSize="16sp"
+        android:layout_marginLeft="200dp"
         android:layout_marginBottom = "160dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/train_acc_btn"
-        android:layout_width="150dp"
+        android:layout_width="130dp"
         android:layout_height="80dp"
         android:text="Train Activity"
-        android:textSize="24sp"
-        android:layout_marginLeft="220dp"
+        android:textSize="16sp"
+        android:layout_marginLeft="200dp"
         android:layout_marginBottom = "60dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />

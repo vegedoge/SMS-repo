@@ -67,7 +67,7 @@ public class SensorHandler implements SensorEventListener {
     
     public void startDetecting() {
         this.isDetecting = true;
-        Toast.makeText(this.context, "Start Detecting Data", Toast.LENGTH_SHORT).show();
+//        Toast.makeText(this.context, "Start Detecting Data", Toast.LENGTH_SHORT).show();
     }
 
     public static float[] extractFeatures(ArrayList<float[]> data) {
@@ -116,7 +116,7 @@ public class SensorHandler implements SensorEventListener {
                     // notify the detectFragment to update the ui
                     detectionListener.onDetectionResult(result);
                 }
-                Toast.makeText(this.context, "Detecting Mode: " + result, Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this.context, "Detecting Mode: " + result, Toast.LENGTH_SHORT).show();
                 this.isDetecting = false;
             }
             this.windowData.clear();
